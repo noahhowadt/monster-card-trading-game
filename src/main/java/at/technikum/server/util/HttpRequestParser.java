@@ -39,7 +39,7 @@ public class HttpRequestParser {
         if (!tokens[2].equals("HTTP/1.1")) throw new IllegalArgumentException("We only accept HTTP/1.1");
     }
 
-    private static void parseHeader(String line, Request request) throws IllegalArgumentException {
+    private static void parseHeader(String line, Request request) {
         String[] tokens = line.split(":", 2);
         request.setHeader(tokens[0], tokens[1].trim());
     }
