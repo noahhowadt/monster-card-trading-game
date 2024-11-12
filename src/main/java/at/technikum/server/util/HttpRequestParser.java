@@ -4,7 +4,7 @@ import at.technikum.server.http.Method;
 import at.technikum.server.http.Request;
 
 public class HttpRequestParser {
-    public static Request parse(String rawRequest) {
+    public Request parse(String rawRequest) {
         String[] lines = rawRequest.split("\\R");
         Request request = new Request();
         parseRequestLine(lines[0], request);
@@ -40,8 +40,7 @@ public class HttpRequestParser {
     }
 
     private static void parseHeader(String line, Request request) throws IllegalArgumentException {
-        String[] tokens = line.split(":");
-        if (tokens.length != 2) throw new IllegalArgumentException("Invalid request: " + line);
+        String[] tokens = line.split(":", 2);
         request.setHeader(tokens[0], tokens[1].trim());
     }
 }
