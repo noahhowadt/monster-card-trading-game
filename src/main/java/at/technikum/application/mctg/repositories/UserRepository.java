@@ -27,9 +27,6 @@ public class UserRepository {
     }
 
     public Optional<User> findByUsername(String username) {
-        System.out.println(this.users);
-        Optional<User> found = users.stream().filter(user -> user.getUsername().equals(username)).findFirst();
-        System.out.println(found);
-        return found;
+        return users.stream().filter(user -> user.getUsername().equals(username)).findFirst();
     }
 }

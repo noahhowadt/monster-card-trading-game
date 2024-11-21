@@ -15,7 +15,12 @@ public class ExceptionHandler {
             return this.createErrorResponse(Status.NOT_FOUND);
         } catch (ConflictException e) {
             return this.createErrorResponse(Status.CONFLICT);
+        } catch (MethodNotAllowedException e) {
+            return this.createErrorResponse(Status.METHOD_NOT_ALLOWED);
+        } catch (UnauthorizedException e) {
+            return this.createErrorResponse(Status.UNAUTHORIZED);
         } catch (RuntimeException e) {
+            System.out.println(e.getMessage());
             return this.createErrorResponse(Status.INTERNAL_SERVER_ERROR);
         }
     }

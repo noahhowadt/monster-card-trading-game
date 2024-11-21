@@ -10,8 +10,8 @@ import at.technikum.server.http.Status;
 public class UserController extends Controller {
     private final UserService userService;
 
-    public UserController() {
-        this.userService = new UserService();
+    public UserController(final UserService userService) {
+        this.userService = userService;
     }
 
     public Response handle(final Request request) {
@@ -25,7 +25,7 @@ public class UserController extends Controller {
 
     private Response create(final Request request) {
         User newUser = super.parseBody(request, User.class);
-        userService.create(newUser);
+        this.userService.create(newUser);
 
         Response res = new Response();
         res.setStatus(Status.CREATED);
