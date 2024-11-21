@@ -33,7 +33,6 @@ public class Server {
                 );
 
                 requestHandler.handle();
-
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
