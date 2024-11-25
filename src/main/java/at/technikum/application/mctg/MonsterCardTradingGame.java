@@ -36,7 +36,7 @@ public class MonsterCardTradingGame implements Application {
     private void initRoutes() {
         this.router.addRoute("/users", new UserController(this.userService));
         this.router.addRoute("/sessions", new SessionController(this.authService));
-        this.router.addRoute("/packages", new PackageController());
+        this.router.addRoute("/packages", new PackageController(this.authService));
     }
 
     @Override

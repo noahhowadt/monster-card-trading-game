@@ -6,6 +6,7 @@ import at.technikum.application.mctg.util.Utils;
 import at.technikum.server.http.Request;
 import at.technikum.server.http.Response;
 import at.technikum.server.http.Status;
+import com.fasterxml.jackson.core.type.TypeReference;
 
 public class UserController extends Controller {
     private final UserService userService;
@@ -24,7 +25,8 @@ public class UserController extends Controller {
     }
 
     private Response create(final Request request) {
-        User newUser = super.parseBody(request, User.class);
+        User newUser = super.parseBody(request, new TypeReference<User>() {
+        });
         this.userService.create(newUser);
 
         Response res = new Response();

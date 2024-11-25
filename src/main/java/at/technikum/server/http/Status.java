@@ -8,7 +8,8 @@ public enum Status {
     INTERNAL_SERVER_ERROR(500, "INTERNAL SERVER ERROR"),
     METHOD_NOT_ALLOWED(405, "METHOD NOT ALLOWED"),
     CONFLICT(409, "CONFLICT"),
-    UNAUTHORIZED(401, "UNAUTHORIZED");
+    UNAUTHORIZED(401, "UNAUTHORIZED"),
+    FORBIDDEN(403, "FORBIDDEN");
 
     private final int code;
     private final String message;

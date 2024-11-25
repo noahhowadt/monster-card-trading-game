@@ -7,6 +7,7 @@ import at.technikum.server.http.Method;
 import at.technikum.server.http.Request;
 import at.technikum.server.http.Response;
 import at.technikum.server.http.Status;
+import com.fasterxml.jackson.core.type.TypeReference;
 
 public class SessionController extends Controller {
     private final AuthService authService;
@@ -19,7 +20,8 @@ public class SessionController extends Controller {
     public Response handle(Request request) {
         if (request.getMethod() != Method.POST) throw new MethodNotAllowedException("This method is not allowed");
 
-        UserCredentials credentials = super.parseBody(request, UserCredentials.class);
+        UserCredentials credentials = super.parseBody(request, new TypeReference<UserCredentials>() {
+        });
         String token = this.authService.getToken(credentials);
 
         Response response = new Response();

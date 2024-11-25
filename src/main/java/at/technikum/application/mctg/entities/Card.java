@@ -1,9 +1,17 @@
 package at.technikum.application.mctg.entities;
 
-abstract public class Card {
+public class Card {
+    String id;
     String name;
-    int damage;
+    float damage;
     CardType type;
+
+    public Card() {
+    }
+
+    public String getId() {
+        return id;
+    }
 
     public String getName() {
         return name;
@@ -13,11 +21,11 @@ abstract public class Card {
         this.name = name;
     }
 
-    public int getDamage() {
+    public float getDamage() {
         return damage;
     }
 
-    public void setDamage(int damage) {
+    public void setDamage(float damage) {
         this.damage = damage;
     }
 

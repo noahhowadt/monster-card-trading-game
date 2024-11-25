@@ -18,13 +18,18 @@ public class AuthService {
         User user = this.userRepository.findByUsername(credentials.getUsername()).orElseThrow(() -> new BadRequestException("User not found"));
         if (!user.getPassword().equals(credentials.getPassword())) throw new UnauthorizedException("Unauthorized");
 
-        return user.getUsername() + "-mtcgToken";
+        return user.getUsername() + "-mctgToken";
     }
 
     public User authenticate(Request request) {
         String token = request.getHeader("Authorization").replace("Bearer ", "");
-        if (!token.endsWith("-mtcgToken")) throw new UnauthorizedException("Unauthorized");
+        System.out.println(token);
+        if (!token.endsWith("-mctgToken")) throw new UnauthorizedException("Unauthorized");
 
         return this.userRepository.findByUsername(token.split("-", 2)[0]).orElseThrow(() -> new BadRequestException("User not found"));
+    }
+
+    public boolean isAdmin(User user) {
+        return user.getUsername().equals("admin");
     }
 }

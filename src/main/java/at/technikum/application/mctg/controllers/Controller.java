@@ -4,13 +4,14 @@ import at.technikum.application.mctg.exceptions.BadRequestException;
 import at.technikum.application.mctg.exceptions.InternalException;
 import at.technikum.server.http.Request;
 import at.technikum.server.http.Response;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 
 public abstract class Controller {
     public abstract Response handle(Request request);
 
-    public <T> T parseBody(Request req, Class<T> clazz) {
+    public <T> T parseBody(Request req, TypeReference<T> clazz) {
         try {
             ObjectMapper objectMapper = new ObjectMapper();
             objectMapper.configure(com.fasterxml.jackson.databind.MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES, true);
