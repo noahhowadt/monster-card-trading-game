@@ -1,7 +1,9 @@
 package at.technikum.application.mctg.entities;
 
+import java.util.UUID;
+
 public class Card {
-    String id;
+    UUID id;
     String name;
     float damage;
     CardType type;
@@ -9,7 +11,11 @@ public class Card {
     public Card() {
     }
 
-    public String getId() {
+    public void setId(UUID id) {
+        this.id = id;
+    }
+
+    public UUID getId() {
         return id;
     }
 

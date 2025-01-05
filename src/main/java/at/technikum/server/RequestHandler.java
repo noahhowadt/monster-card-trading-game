@@ -9,7 +9,7 @@ import at.technikum.server.util.HttpSocket;
 import java.io.IOException;
 import java.net.Socket;
 
-public class RequestHandler {
+public class RequestHandler implements Runnable {
 
     // [x] receive socket
     // [x] wrap socket in HttpSocket
@@ -31,6 +31,10 @@ public class RequestHandler {
         this.application = application;
     }
 
+    public void run() {
+        this.handle();
+    }
+
     public void handle() {
         HttpRequestParser httpRequestParser = new HttpRequestParser();
         HttpResponseFormatter httpResponseFormatter = new HttpResponseFormatter();
@@ -42,6 +46,7 @@ public class RequestHandler {
             Response response = this.application.handle(request);
 
             http = httpResponseFormatter.format(response);
+            System.out.println(http);
             httpSocket.write(http);
         } catch (IOException e) {
 

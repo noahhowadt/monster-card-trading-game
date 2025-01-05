@@ -5,6 +5,7 @@ import at.technikum.application.mctg.entities.User;
 import at.technikum.application.mctg.exceptions.ForbiddenException;
 import at.technikum.application.mctg.exceptions.MethodNotAllowedException;
 import at.technikum.application.mctg.services.AuthService;
+import at.technikum.application.mctg.services.CardService;
 import at.technikum.server.http.Method;
 import at.technikum.server.http.Request;
 import at.technikum.server.http.Response;
@@ -15,9 +16,11 @@ import java.util.ArrayList;
 
 public class PackageController extends Controller {
     private final AuthService authService;
+    private final CardService cardService;
 
-    public PackageController(final AuthService authService) {
+    public PackageController(final AuthService authService, final CardService cardService) {
         this.authService = authService;
+        this.cardService = cardService;
     }
 
     public Response handle(final Request request) {
@@ -29,10 +32,8 @@ public class PackageController extends Controller {
         ArrayList<Card> packageCards = super.parseBody(request, new TypeReference<ArrayList<Card>>() {
         });
 
-        for (Card packageCard : packageCards) {
-            System.out.println(packageCard);
-        }
-
+        cardService.addPackage(packageCards);
+        
         Response response = new Response();
         response.setStatus(Status.OK);
         return response;

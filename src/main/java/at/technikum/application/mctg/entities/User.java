@@ -1,24 +1,30 @@
 package at.technikum.application.mctg.entities;
 
+import java.util.UUID;
+
 public class User {
-    private int id;
+    private UUID id;
     private String username;
     private String password;
-    private int coins = 20;
+    private int coins;
+    private String name;
+    private String bio;
+    private String image;
 
     public User() {
     }
 
-    public User(String username, String password) {
+    public User(UUID id, String username, String password) {
+        this.id = id;
         this.username = username;
         this.password = password;
     }
 
-    public int getId() {
+    public UUID getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 
@@ -44,5 +50,29 @@ public class User {
 
     public void setCoins(int coins) {
         this.coins = coins;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getBio() {
+        return bio;
+    }
+
+    public void setBio(String bio) {
+        this.bio = bio;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 }
