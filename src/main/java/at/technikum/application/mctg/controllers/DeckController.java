@@ -52,7 +52,11 @@ public class DeckController extends Controller {
 
         Response response = new Response();
         response.setStatus(Status.OK);
-        response.setBody(super.stringifyObject(deck));
+        if (request.getQueryParam("format") != null && request.getQueryParam("format").equals("plain")) {
+            response.setBody(deck.stream().map(UUID::toString).reduce("", (a, b) -> a + b + "\n"));
+        } else {
+            response.setBody(super.stringifyObject(deck));
+        }
         return response;
     }
 }

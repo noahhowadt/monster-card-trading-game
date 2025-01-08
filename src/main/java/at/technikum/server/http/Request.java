@@ -7,10 +7,12 @@ public class Request {
     private Method method;
     private String path;
     private Map<String, String> headers;
+    private Map<String, String> query;
     private String body;
 
     public Request() {
         this.headers = new HashMap<String, String>();
+        this.query = new HashMap<String, String>();
     }
 
     @Override
@@ -53,5 +55,13 @@ public class Request {
 
     public void setBody(String body) {
         this.body = body;
+    }
+
+    public String getQueryParam(String key) {
+        return this.query.get(key);
+    }
+
+    public void setQueryParam(String key, String value) {
+        this.query.put(key, value);
     }
 }
