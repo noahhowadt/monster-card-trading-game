@@ -37,6 +37,7 @@ public class MonsterCardTradingGame implements Application {
         CleanService cleanService = new CleanService(userRepository, packageRepository, cardRepository);
         CardService cardService = new CardService(packageRepository, cardRepository, userRepository, deckRepository, tradeRepository);
         TradingService tradingService = new TradingService(tradeRepository, cardRepository, deckRepository);
+        BattleService battleService = new BattleService(cardService, cardRepository);
 
         // init routes
         this.router.addRoute("/users", new UserController(userService, authService));
@@ -46,6 +47,7 @@ public class MonsterCardTradingGame implements Application {
         this.router.addRoute("/cards", new CardController(cardService, authService));
         this.router.addRoute("/deck", new DeckController(authService, userService, cardService));
         this.router.addRoute("/tradings", new TradingController(authService, tradingService));
+        this.router.addRoute("/battles", new BattleController(battleService, authService));
         this.router.addRoute("/clean", new CleanController(cleanService));
     }
 

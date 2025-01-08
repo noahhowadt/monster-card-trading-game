@@ -19,6 +19,7 @@ public class CardRepository {
     private final String GET_BY_USER = "SELECT * FROM cards WHERE user_id = ?";
     private final String GET_BY_ID = "SELECT * FROM cards WHERE id = ?";
     private final String CHANGE_OWNER = "UPDATE cards SET user_id = ? WHERE id = ?";
+    private final String GET_RANDOM_FROM_DECK = "SELECT * FROM cards INNER JOIN deck WHERE cards.user_id = ? ORDER BY RANDOM() LIMIT 1";
 
     public CardRepository(ConnectionPooler connectionPooler) {
         this.connectionPooler = connectionPooler;
@@ -143,6 +144,31 @@ public class CardRepository {
             preparedStatement.execute();
 
             connection.commit();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
+    }
+
+    public Card getRandomFromDeck(User user) {
+        try (
+                Connection connection = connectionPooler.getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement(GET_RANDOM_FROM_DECK)
+        ) {
+            preparedStatement.setObject(1, user.getId());
+            preparedStatement.execute();
+
+            boolean hasResult = preparedStatement.getResultSet().next();
+            if (!hasResult) throw new BadRequestException("No cards in deck");
+
+            Card card = new Card();
+            card.setId(preparedStatement.getResultSet().getObject("id", UUID.class));
+            card.setName(preparedStatement.getResultSet().getString("name"));
+            card.setDamage(preparedStatement.getResultSet().getFloat("damage"));
+            card.setUserId(preparedStatement.getResultSet().getObject("user_id", UUID.class));
+            card.setPackageId(preparedStatement.getResultSet().getObject("package_id", UUID.class));
+
+            return card;
         } catch (SQLException e) {
             e.printStackTrace();
             throw new RuntimeException(e);
