@@ -3,14 +3,9 @@ package at.technikum.application.mctg;
 import at.technikum.application.mctg.controllers.*;
 import at.technikum.application.mctg.data.ConnectionPooler;
 import at.technikum.application.mctg.exceptions.ExceptionHandler;
-import at.technikum.application.mctg.repositories.CardRepository;
-import at.technikum.application.mctg.repositories.PackageRepository;
-import at.technikum.application.mctg.repositories.UserRepository;
+import at.technikum.application.mctg.repositories.*;
 import at.technikum.application.mctg.routing.Router;
-import at.technikum.application.mctg.services.AuthService;
-import at.technikum.application.mctg.services.CardService;
-import at.technikum.application.mctg.services.CleanService;
-import at.technikum.application.mctg.services.UserService;
+import at.technikum.application.mctg.services.*;
 import at.technikum.server.Application;
 import at.technikum.server.http.Request;
 import at.technikum.server.http.Response;
@@ -33,18 +28,24 @@ public class MonsterCardTradingGame implements Application {
         UserRepository userRepository = new UserRepository(connectionPooler);
         PackageRepository packageRepository = new PackageRepository(connectionPooler);
         CardRepository cardRepository = new CardRepository(connectionPooler);
+        DeckRepository deckRepository = new DeckRepository(connectionPooler);
+        TradeRepository tradeRepository = new TradeRepository(connectionPooler);
 
         // init services
         UserService userService = new UserService(userRepository);
         AuthService authService = new AuthService(userRepository);
         CleanService cleanService = new CleanService(userRepository, packageRepository, cardRepository);
-        CardService cardService = new CardService(packageRepository, cardRepository, userRepository);
+        CardService cardService = new CardService(packageRepository, cardRepository, userRepository, deckRepository, tradeRepository);
+        TradingService tradingService = new TradingService(tradeRepository, cardRepository, deckRepository);
 
         // init routes
         this.router.addRoute("/users", new UserController(userService, authService));
         this.router.addRoute("/sessions", new SessionController(authService));
         this.router.addRoute("/packages", new PackageController(authService, cardService));
         this.router.addRoute("/transactions/packages", new TransactionController(authService, cardService));
+        this.router.addRoute("/cards", new CardController(cardService, authService));
+        this.router.addRoute("/deck", new DeckController(authService, userService, cardService));
+        this.router.addRoute("/tradings", new TradingController(authService, tradingService));
         this.router.addRoute("/clean", new CleanController(cleanService));
     }
 

@@ -6,7 +6,8 @@ public class Card {
     UUID id;
     String name;
     float damage;
-    CardType type;
+    UUID packageId;
+    UUID userId;
 
     public Card() {
     }
@@ -36,10 +37,26 @@ public class Card {
     }
 
     public CardType getType() {
-        return type;
+        if (this.name.endsWith("Spell")) {
+            return CardType.SPELL;
+        } else {
+            return CardType.MONSTER;
+        }
     }
 
-    public void setType(CardType type) {
-        this.type = type;
+    public UUID getPackageId() {
+        return packageId;
+    }
+
+    public void setPackageId(UUID packageId) {
+        this.packageId = packageId;
+    }
+
+    public UUID getUserId() {
+        return userId;
+    }
+
+    public void setUserId(UUID userId) {
+        this.userId = userId;
     }
 }

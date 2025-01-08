@@ -11,7 +11,7 @@ import java.util.UUID;
 
 public class PackageRepository {
     private final String CREATE_PACKAGE = "INSERT INTO packages (id) VALUES (?)";
-    private final String GET_RANDOM_PACKAGE = "SELECT * FROM packages ORDER BY RANDOM() LIMIT 1";
+    private final String GET_RANDOM_PACKAGE = "SELECT * FROM packages LIMIT 1";
     private final String DELETE_PACKAGE = "DELETE FROM packages WHERE id = ?";
     private final String DELETE_ALL = "DELETE FROM packages";
     private final ConnectionPooler connectionPooler;

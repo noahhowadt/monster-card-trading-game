@@ -22,6 +22,7 @@ public class AuthService {
     }
 
     public User authenticate(Request request) {
+        if (request.getHeader("Authorization") == null) throw new UnauthorizedException("Unauthorized");
         String token = request.getHeader("Authorization").replace("Bearer ", "");
         if (!token.endsWith("-mctgToken")) throw new UnauthorizedException("Unauthorized");
 

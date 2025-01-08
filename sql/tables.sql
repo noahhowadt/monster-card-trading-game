@@ -32,3 +32,14 @@ CREATE TABLE IF NOT EXISTS deck
     UNIQUE (user_id, card_id) -- Prevent duplicate cards in a user's deck
 );
 
+CREATE TYPE card_type AS ENUM ('monster', 'spell');
+CREATE TABLE trades
+(
+    id             UUID PRIMARY KEY,
+    card_to_trade  UUID      NOT NULL UNIQUE REFERENCES cards (id),
+    type           card_type NOT NULL DEFAULT 'monster',
+    minimum_damage FLOAT     NOT NULL
+);
+
+
+
