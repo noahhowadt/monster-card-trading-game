@@ -14,6 +14,7 @@ public class DeckRepository {
     private final static String CLEAR_DECK = "DELETE FROM deck WHERE user_id = ?";
     private final static String ADD_CARDS_TO_DECK = "INSERT INTO deck (id, user_id, card_id) VALUES (?, ?, ?)";
     private final static String GET_DECK = "SELECT * FROM deck WHERE user_id = ?";
+    private final static String CLEAR_ALL = "DELETE FROM deck";
 
     public DeckRepository(ConnectionPooler connectionPooler) {
         this.connectionPooler = connectionPooler;
@@ -67,6 +68,18 @@ public class DeckRepository {
                 deck.add(resultSet.getObject("card_id", UUID.class));
             }
             return deck;
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void deleteAll() {
+        try (
+                Connection connection = connectionPooler.getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement(CLEAR_ALL);
+        ) {
+            preparedStatement.execute();
         } catch (Exception e) {
             e.printStackTrace();
             throw new RuntimeException(e);

@@ -41,5 +41,12 @@ CREATE TABLE trades
     minimum_damage FLOAT     NOT NULL
 );
 
+CREATE TABLE IF NOT EXISTS stats
+(
+    user_id UUID PRIMARY KEY REFERENCES users (id) ON DELETE CASCADE,
+    wins    INTEGER DEFAULT 0 NOT NULL,
+    losses  INTEGER DEFAULT 0 NOT NULL
+);
+
 
 

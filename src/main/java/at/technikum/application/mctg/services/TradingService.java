@@ -49,6 +49,11 @@ public class TradingService {
         ArrayList<TradingDeal> deals = this.tradeRepository.listAll();
         TradingDeal deal = deals.stream().filter(d -> d.getId().equals(tradeId)).findFirst().orElseThrow(() -> new NotFoundException("Trade not found"));
 
+        // check that the trade is not by the same user
+        if (deal.getUserId().equals(user.getId())) {
+            throw new BadRequestException("Cannot trade with self");
+        }
+
         // get cards
         Card offeredCard = this.cardRepository.getById(cardId);
         Card tradeCard = this.cardRepository.getById(deal.getCardToTrade());
@@ -57,7 +62,6 @@ public class TradingService {
         if (!offeredCard.getUserId().equals(user.getId())) {
             throw new BadRequestException("Card does not belong to user");
         }
-
 
         // check that card is of correct type
         if (!offeredCard.getType().equals(deal.getType())) {

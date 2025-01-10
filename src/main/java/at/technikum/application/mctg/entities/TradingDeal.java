@@ -7,6 +7,7 @@ public class TradingDeal {
     private UUID cardToTrade;
     private CardType type;
     private float minimumDamage;
+    private UUID userId;
 
     public TradingDeal() {
     }
@@ -41,5 +42,13 @@ public class TradingDeal {
 
     public void setMinimumDamage(float minimumDamage) {
         this.minimumDamage = minimumDamage;
+    }
+
+    public UUID getUserId() {
+        return userId;
+    }
+
+    public void setUserId(UUID userId) {
+        this.userId = userId;
     }
 }

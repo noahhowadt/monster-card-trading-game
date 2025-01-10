@@ -88,8 +88,8 @@ public class Card {
 
         String monsterStr = "";
         for (int i = this.name.length() - 1; i >= 0; i--) {
-            if (Character.isUpperCase(this.name.charAt(i))) break;
             monsterStr = this.name.charAt(i) + monsterStr;
+            if (Character.isUpperCase(this.name.charAt(i))) break;
         }
 
         return CardMonster.fromString(monsterStr);

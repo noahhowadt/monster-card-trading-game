@@ -30,14 +30,16 @@ public class MonsterCardTradingGame implements Application {
         CardRepository cardRepository = new CardRepository(connectionPooler);
         DeckRepository deckRepository = new DeckRepository(connectionPooler);
         TradeRepository tradeRepository = new TradeRepository(connectionPooler);
+        StatsRepository statsRepository = new StatsRepository(connectionPooler);
 
         // init services
         UserService userService = new UserService(userRepository);
         AuthService authService = new AuthService(userRepository);
-        CleanService cleanService = new CleanService(userRepository, packageRepository, cardRepository);
+        CleanService cleanService = new CleanService(userRepository, packageRepository, cardRepository, deckRepository, tradeRepository, statsRepository);
         CardService cardService = new CardService(packageRepository, cardRepository, userRepository, deckRepository, tradeRepository);
         TradingService tradingService = new TradingService(tradeRepository, cardRepository, deckRepository);
-        BattleService battleService = new BattleService(cardService, cardRepository);
+        BattleService battleService = new BattleService(cardService, cardRepository, statsRepository);
+        StatsService statsService = new StatsService(statsRepository);
 
         // init routes
         this.router.addRoute("/users", new UserController(userService, authService));
@@ -48,6 +50,8 @@ public class MonsterCardTradingGame implements Application {
         this.router.addRoute("/deck", new DeckController(authService, userService, cardService));
         this.router.addRoute("/tradings", new TradingController(authService, tradingService));
         this.router.addRoute("/battles", new BattleController(battleService, authService));
+        this.router.addRoute("/stats", new StatsController(authService, statsService));
+        this.router.addRoute("/scoreboard", new ScoreboardController(authService, statsService));
         this.router.addRoute("/clean", new CleanController(cleanService));
     }
 

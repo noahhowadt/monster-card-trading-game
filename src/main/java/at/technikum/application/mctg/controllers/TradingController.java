@@ -62,9 +62,12 @@ public class TradingController extends Controller {
             throw new MethodNotAllowedException("Method not allowed");
         }
         UUID tradeId = UUID.fromString(parts[2]);
+        System.out.println(tradeId);
 
         // get cardId from body
-        UUID offeredCardId = UUID.fromString(request.getBody());
+        System.out.println(request.getBody());
+        UUID offeredCardId = UUID.fromString(request.getBody().replace("\"", ""));
+        System.out.println(offeredCardId);
 
         // Carry out trade
         this.tradingService.carryOutTrade(user, tradeId, offeredCardId);
