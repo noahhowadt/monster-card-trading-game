@@ -12,6 +12,7 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.Predicate;
+import java.util.stream.Stream;
 
 public class BattleService {
     private final BlockingQueue<User> requestQueue = new LinkedBlockingQueue<>(); // Thread-safe request queue
@@ -139,11 +140,21 @@ public class BattleService {
                 // get random cards from the deck
                 Card card1 = deck1.get(ThreadLocalRandom.current().nextInt(deck1.size()));
                 Card card2 = deck2.get(ThreadLocalRandom.current().nextInt(deck2.size()));
+
                 // write cards to battle log
                 battleLog.addLogEntry("Round " + round + ": " + user1.getUsername() + " played " + card1.getName() + " (" + card1.getDamage() + " damage)");
                 battleLog.addLogEntry("Round " + round + ": " + user2.getUsername() + " played " + card2.getName() + " (" + card2.getDamage() + " damage)");
+
+                // random card from deck 1 or deck 2
+                Card luckyCard = Stream.concat(deck1.stream(), deck2.stream()).skip(ThreadLocalRandom.current().nextInt((deck1.size() + deck2.size()) * 5)).findFirst().orElse(null);
+                if (luckyCard != null) {
+                    battleLog.addLogEntry("The lucky card is " + luckyCard.getName());
+                } else {
+                    battleLog.addLogEntry("There is no lucky card");
+                }
+
                 // handle round
-                UUID winnerId = handleRound(card1, card2, battleLog);
+                UUID winnerId = handleRound(card1, card2, battleLog, luckyCard);
 
                 // get winner
                 User winner = winnerId == null ? null : winnerId.equals(user1.getId()) ? user1 : user2;
@@ -193,7 +204,25 @@ public class BattleService {
 
     }
 
-    private UUID handleRound(Card card1, Card card2, BattleLog battleLog) {
+    private UUID handleRound(Card card1, Card card2, BattleLog battleLog, Card luckyCard) {
+        // TESTING: return random winner
+        /* if (ThreadLocalRandom.current().nextBoolean()) {
+            return card1.getUserId();
+        } else {
+            return card2.getUserId();
+        }*/
+
+        // check if lucky card is in the fight
+        if (luckyCard != null) {
+            if (card1.getId().equals(luckyCard.getId())) {
+                battleLog.addLogEntry("Lucky card " + luckyCard.getName() + " is in the fight. " + card1.getName() + " wins the round");
+                return card1.getUserId();
+            } else if (card2.getId().equals(luckyCard.getId())) {
+                battleLog.addLogEntry("Lucky card " + luckyCard.getName() + " is in the fight. " + card2.getName() + " wins the round");
+                return card2.getUserId();
+            }
+        }
+
         // get random cards from the deck
         boolean isPureMonsterFight = card1.getType().equals(CardType.MONSTER) && card2.getType().equals(CardType.MONSTER);
         if (isPureMonsterFight) battleLog.addLogEntry("This is a pure monster fight. Let's brawl!");

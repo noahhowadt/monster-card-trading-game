@@ -11,11 +11,11 @@ import java.util.ArrayList;
 import java.util.UUID;
 
 public class StatsRepository {
-    private final static String ADD_WIN = "INSERT INTO stats (user_id, wins, losses) VALUES (?, 1, 0) ON DUPLICATE KEY UPDATE wins = wins + 1";
-    private final static String ADD_LOSS = "INSERT INTO stats (user_id, wins, losses) VALUES (?, 0, 1) ON DUPLICATE KEY UPDATE losses = losses + 1";
+    private final static String ADD_WIN = "INSERT INTO stats (user_id, wins, losses) VALUES (?, 1, 0) ON CONFLICT (user_id) DO UPDATE SET wins = stats.wins + 1";
+    private final static String ADD_LOSS = "INSERT INTO stats (user_id, wins, losses) VALUES (?, 0, 1) ON CONFLICT (user_id) DO UPDATE SET losses = stats.losses + 1";
     // select * and elo = 100 + wins * 3 - losses * 5
     private final static String GET_BY_USER = "SELECT *, 100 + 3 * wins - 5 * losses AS elo FROM stats WHERE user_id = ?";
-    private final static String GET_ALL = "SELECT *, 100 + 3 * wins - 5 * losses AS elo FROM stats ORDER BY elo DESC";
+    private final static String GET_ALL = "SELECT *, 100 + 3 * wins - 5 * losses AS elo FROM stats JOIN users ON stats.user_id = users.id ORDER BY elo DESC";
     private final static String CLEAR_ALL = "DELETE FROM stats";
 
     private final ConnectionPooler connectionPooler;
