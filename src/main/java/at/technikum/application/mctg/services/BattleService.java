@@ -75,13 +75,17 @@ public class BattleService {
         }
 
         try {
-            // Check if there's already a user waiting for a battle
-            User waitingUser = requestQueue.poll(); // Non-blocking check
+            User waitingUser = null;
+            synchronized (requestQueue) {
+                waitingUser = requestQueue.poll(); // Non-blocking check
+                if (waitingUser == null) {
+                    requestQueue.put(user); // Add current user to the queue
+                }
+            }
 
             if (waitingUser == null) {
                 // No user waiting, add current user to the queue and wait for a match
                 System.out.println("User " + user.getUsername() + " is waiting for a battle...");
-                requestQueue.put(user); // Add current user to the queue
                 // save current timestamp
                 long start = System.currentTimeMillis();
 
@@ -195,10 +199,6 @@ public class BattleService {
             }
 
             resultsQueue.put(battleLog); // Add battle log to the results queue
-            /*ArrayList<String> testLog = new ArrayList<>();
-            testLog.add("Test");
-            battleLog.setLog(testLog);
-            resultsQueue.put(battleLog);*/
             return battleLog.getLog();
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt(); // Handle interruption
