@@ -23,6 +23,10 @@ public class BattleLog {
         log.add(entry);
     }
 
+    public void setLog(ArrayList<String> log) {
+        this.log = log;
+    }
+
     public ArrayList<String> getLog() {
         return log;
     }

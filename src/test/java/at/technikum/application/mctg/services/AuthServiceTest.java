@@ -8,7 +8,6 @@ import at.technikum.application.mctg.repositories.UserRepository;
 import at.technikum.server.http.Request;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 
 import java.util.Optional;
 

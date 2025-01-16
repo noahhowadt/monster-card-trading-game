@@ -195,6 +195,10 @@ public class BattleService {
             }
 
             resultsQueue.put(battleLog); // Add battle log to the results queue
+            /*ArrayList<String> testLog = new ArrayList<>();
+            testLog.add("Test");
+            battleLog.setLog(testLog);
+            resultsQueue.put(battleLog);*/
             return battleLog.getLog();
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt(); // Handle interruption

@@ -25,6 +25,8 @@ public class CardService {
     }
 
     public void addPackage(ArrayList<Card> cards) {
+        if (cards.size() != 5) throw new BadRequestException("Package must contain exactly 5 cards");
+
         UUID packageId = UUID.randomUUID();
         packageRepository.createPackage(packageId);
         cardRepository.save(cards, packageId);

@@ -12,6 +12,11 @@ public class Card {
     public Card() {
     }
 
+    public Card(UUID id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
     public void setId(UUID id) {
         this.id = id;
     }

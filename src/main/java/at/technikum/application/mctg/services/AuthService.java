@@ -22,8 +22,9 @@ public class AuthService {
     }
 
     public User authenticate(Request request) {
-        if (request.getHeader("Authorization") == null) throw new UnauthorizedException("Unauthorized");
-        String token = request.getHeader("Authorization").replace("Bearer ", "");
+        String authHeader = request.getHeader("Authorization");
+        if (authHeader == null) throw new UnauthorizedException("Unauthorized");
+        String token = authHeader.replace("Bearer ", "");
         if (!token.endsWith("-mctgToken")) throw new UnauthorizedException("Unauthorized");
 
         return this.userRepository.findByUsername(token.split("-", 2)[0]).orElseThrow(() -> new BadRequestException("User not found"));

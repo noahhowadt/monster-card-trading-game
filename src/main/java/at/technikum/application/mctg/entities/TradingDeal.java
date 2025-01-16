@@ -12,6 +12,19 @@ public class TradingDeal {
     public TradingDeal() {
     }
 
+    public TradingDeal(UUID id, UUID cardToTrade) {
+        this.id = id;
+        this.cardToTrade = cardToTrade;
+    }
+
+    public TradingDeal(UUID id, UUID cardToTrade, CardType type, float minimumDamage, UUID userId) {
+        this.id = id;
+        this.cardToTrade = cardToTrade;
+        this.type = type;
+        this.minimumDamage = minimumDamage;
+        this.userId = userId;
+    }
+
     public UUID getId() {
         return id;
     }
